@@ -1,3 +1,4 @@
+Measure-Command {
 $Query = 'SELECT * FROM TABLE'
 
 $InvSQLParams = @{
@@ -17,6 +18,7 @@ $outputCsv = $quotedData | % {$_ -replace  `
         ,'${start}${output}'}
 
 $outputCsv | Out-File 'c:\temp\your_file.csv' -Encoding utf8 -Force
+}
 
 
 
