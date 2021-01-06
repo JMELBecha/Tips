@@ -1,0 +1,14 @@
+$Query = 'SELECT * FROM TABLE'
+
+$InvSQLParams = @{
+    ServerInstance = 'SERVER-NAME'
+    Database       = 'master'
+    Query          = $Query
+}
+
+$quotedData = Invoke-Sqlcmd @InvSQLParams |  convertto-csv -NoTypeInformation -Delimiter ";" 
+$outputCsv = $quotedData | % {$_ -replace  `
+        '\G(?<start>^|;)(("(?<output>[^;"]*?)"(?=;|$))|(?<output>".*?(?<!")("")*?"(?=;|$)))' `
+        ,'${start}${output}'}
+
+$outputCsv | Out-File 'c:\temp\your_file.csv' -Encoding utf8 -Force
