@@ -1,9 +1,14 @@
 $Query = 'SELECT * FROM TABLE'
 
 $InvSQLParams = @{
-    ServerInstance = 'SERVER-NAME'
+    ServerInstance = 'SERVER-NAME' 
     Database       = 'master'
     Query          = $Query
+}
+# or with connectionstring
+$InvSQLParams = @{
+    ConnectionString = 'Data Source=MYSERVER;Initial Catalog=MyDatabase;Integrated Security=True;ApplicationIntent=ReadOnly'
+    Query            = $Query
 }
 
 $quotedData = Invoke-Sqlcmd @InvSQLParams |  convertto-csv -NoTypeInformation -Delimiter ";" 
@@ -12,3 +17,7 @@ $outputCsv = $quotedData | % {$_ -replace  `
         ,'${start}${output}'}
 
 $outputCsv | Out-File 'c:\temp\your_file.csv' -Encoding utf8 -Force
+
+
+
+
